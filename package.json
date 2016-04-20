@@ -9,7 +9,7 @@
     "collaby:start",
     "collaby:join"
   ],
-  "repository": "https://github.com/atom/collaby",
+  "repository": "https://github.com/Patcher56/collaby",
   "license": "MIT",
   "engines": {
     "atom": ">=1.0.0 <2.0.0"
