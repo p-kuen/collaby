@@ -1,0 +1,31 @@
+# See https://atom.io/docs/latest/hacking-atom-package-word-count#menus for more details
+'menu': [
+  {
+    'label': 'Packages'
+    'submenu': [
+      'label': 'collaby'
+      'submenu': [
+        {
+          'label': 'Start Server'
+          'command': 'collaby:startServer'
+        },
+        {
+          'label': 'Stop Server'
+          'command': 'collaby:stop'
+        },
+        {
+          'label': 'Activate Tracking'
+          'command': 'collaby:trackingOn'
+        },
+        {
+          'label': 'Stop Tracking'
+          'command': 'collaby:trackingOff'
+        },
+        {
+          'label': 'Join'
+          'command': 'collaby:join'
+        }
+      ]
+    ]
+  }
+]

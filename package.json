@@ -1,0 +1,32 @@
+{
+  "name": "collaby",
+  "main": "./lib/collaby",
+  "version": "0.0.0",
+  "description": "A short description of your package",
+  "keywords": [
+  ],
+  "activationEvents": [
+    "collaby:start",
+    "collaby:join"
+  ],
+  "repository": "https://github.com/atom/collaby",
+  "license": "MIT",
+  "engines": {
+    "atom": ">=1.0.0 <2.0.0"
+  },
+  "consumedServices": {
+    "status-bar": {
+      "versions": {
+        "^1.0.0": "consumeStatusBar"
+      }
+    }
+  },
+  "dependencies": {
+    "atom-space-pen-views": "^2.0.0",
+    "socket.io": ">=1.4.5",
+    "socket.io-client": ">=1.4.5",
+    "emissary": ">=1.0.0",
+    "event-kit": "^2.0.0",
+    "underscore": "^1.7.0"
+  }
+}
