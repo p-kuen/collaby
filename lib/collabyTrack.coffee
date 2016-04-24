@@ -38,6 +38,8 @@ module.exports = class CollabyTracker
       if !@editor?
         return
       ePath = @editor.getPath()
+      if !ePath?
+        return
 
       if @lastPath != ePath
         @relativePath = ePath.replace @projectPaths[0], ''

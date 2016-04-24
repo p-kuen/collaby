@@ -22,6 +22,8 @@ module.exports = Collaby =
     'collaby:trackingOff': => @trackingOff()
     @subscriptions.add atom.commands.add 'atom-workspace',
     'collaby:join': => @join()
+    @subscriptions.add atom.commands.add 'atom-workspace',
+    'collaby:syncClient': => @syncClient()
 
     @notification = atom.notifications
 
@@ -50,8 +52,8 @@ module.exports = Collaby =
     @server.socket.close()
     @notification.addInfo("Server stopped.")
 
-    Helper.addMenuItem "Join", "collaby:join"
     Helper.addMenuItem "Start Server", "collaby:startServer"
+    Helper.addMenuItem "Join", "collaby:join"
     Helper.removeMenuItem "Activate Tracking", "collaby:trackingOn"
     Helper.removeMenuItem "Stop Server", "collaby:stopServer"
 
@@ -73,12 +75,17 @@ module.exports = Collaby =
       @client = new CollabyClient( ip )
 
       Helper.addMenuItem "Activate Tracking", "collaby:trackingOn"
+      Helper.addMenuItem "Sync from server", "collaby:syncClient"
 
     )
     ipView.show()
 
+  syncClient: ->
+    @client.getFilesFromServer()
+
   trackingOn: ->
     Helper.addMenuItem "Stop Tracking", "collaby:trackingOff"
+    Helper.removeMenuItem "Start Tracking", "collaby:trackingOn"
     @client.startTracking()
 
   trackingOff: ->

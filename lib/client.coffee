@@ -115,8 +115,6 @@ module.exports = class CollabyClient
       if projectCount > 1
         @getFilesFromServer( serverFiles )
       else
-        console.log "one project"
-        console.log Object.keys( serverFiles )[0]
         @getFilesFromServer( serverFiles[ Object.keys( serverFiles )[0] ].content )
 
       #@sync(path, data)
