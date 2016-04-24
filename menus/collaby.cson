@@ -10,18 +10,6 @@
           'command': 'collaby:startServer'
         },
         {
-          'label': 'Stop Server'
-          'command': 'collaby:stop'
-        },
-        {
-          'label': 'Activate Tracking'
-          'command': 'collaby:trackingOn'
-        },
-        {
-          'label': 'Stop Tracking'
-          'command': 'collaby:trackingOff'
-        },
-        {
           'label': 'Join'
           'command': 'collaby:join'
         }

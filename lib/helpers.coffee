@@ -118,3 +118,47 @@ module.exports = Helper =
       return arr
 
     return FScan(scanPath)
+
+  menuToLabelMenu: (template) ->
+    newMenu = {}
+
+    for sub in template
+      if !sub.label?
+        continue
+
+      k = sub.label.replace(/[^\w]/g, "").toLowerCase()
+      newMenu[k] = {}
+      newMenu[k].command = sub.command
+      if sub.submenu?
+        newMenu[k].submenu = @menuToLabelMenu sub.submenu
+
+    return newMenu
+
+
+  menuItemExists: (lCLabel) ->
+    labelMenu = @menuToLabelMenu atom.menu.template
+
+    if labelMenu.packages.submenu.collaby.submenu[lCLabel]?
+      return true
+
+  addMenuItem: (label, command) ->
+    atom.menu.add [
+      {
+        label: "Packages"
+        submenu : [{
+            label: "collaby",
+            submenu: [{label: label, command: command}]
+          }]
+      }
+    ]
+
+  removeMenuItem: (label, command) ->
+    atom.menu.remove [
+      {
+        label: "Packages"
+        submenu : [{
+            label: "collaby",
+            submenu: [{label: label, command: command}]
+          }]
+      }
+    ]

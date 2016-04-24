@@ -35,7 +35,7 @@ module.exports = class CollabyTracker
       @lastFile = @relativePath
 
       @editor = atom.workspace.getActiveTextEditor()
-      if !@editor
+      if !@editor?
         return
       ePath = @editor.getPath()
 

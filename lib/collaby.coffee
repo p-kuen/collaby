@@ -1,5 +1,6 @@
 global.collaby = {}
 CollabyView  = require './collabyView'
+Helper = require "./helpers"
 {CompositeDisposable} = require 'atom'
 
 module.exports = Collaby =
@@ -14,7 +15,7 @@ module.exports = Collaby =
     @subscriptions.add atom.commands.add 'atom-workspace',
     'collaby:startServer': => @startServer()
     @subscriptions.add atom.commands.add 'atom-workspace',
-    'collaby:stop': => @stop()
+    'collaby:stopServer': => @stopServer()
     @events.add atom.commands.add 'atom-workspace',
     'collaby:trackingOn': => @trackingOn()
     @subscriptions.add atom.commands.add 'atom-workspace',
@@ -23,6 +24,7 @@ module.exports = Collaby =
     'collaby:join': => @join()
 
     @notification = atom.notifications
+
 
   deactivate: ->
     console.log "deactivate"
@@ -39,20 +41,20 @@ module.exports = Collaby =
     CollabyClient = require "./client"
     @client = new CollabyClient( 'localhost', {serverClient: true} )
 
-  stop: ->
-    @io.close()
-    console.log "Server closed."
+    Helper.addMenuItem "Activate Tracking", "collaby:trackingOn"
+    Helper.addMenuItem "Stop Server", "collaby:stopServer"
+    Helper.removeMenuItem "Join", "collaby:join"
+    Helper.removeMenuItem "Start Server", "collaby:startServer"
 
-        # #collaby menu for later usage - manipulating
-        # for cat in atom.menu.template
-        #   if cat.label == "&Packages"
-        #     for pkg in cat.submenu
-        #       if pkg.label == "collaby"
-        #         console.log "Found!"
-        #         console.log pkg
-        #         break;
-        #
-        # atom.menu.update()
+  stopServer: ->
+    @server.socket.close()
+    @notification.addInfo("Server stopped.")
+
+    Helper.addMenuItem "Join", "collaby:join"
+    Helper.addMenuItem "Start Server", "collaby:startServer"
+    Helper.removeMenuItem "Activate Tracking", "collaby:trackingOn"
+    Helper.removeMenuItem "Stop Server", "collaby:stopServer"
+
         # atom.confirm
         #   message: 'You have a different file than the server.'
         #   detailedMessage: 'Do you want to download the file from the server now?'
@@ -70,10 +72,13 @@ module.exports = Collaby =
       CollabyClient = require "./client"
       @client = new CollabyClient( ip )
 
+      Helper.addMenuItem "Activate Tracking", "collaby:trackingOn"
+
     )
     ipView.show()
 
   trackingOn: ->
+    Helper.addMenuItem "Stop Tracking", "collaby:trackingOff"
     @client.startTracking()
 
   trackingOff: ->
