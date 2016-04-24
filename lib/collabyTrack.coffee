@@ -48,6 +48,9 @@ module.exports = class CollabyTracker
       em = @emitter
 
       @saveEvent = @editor.buffer.onWillSave () =>
+        if atom.window.noUserSave == true
+          return
+          
         em.emit 'will-save', @relativePath
 
       # Destroy buffers

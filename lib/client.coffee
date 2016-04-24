@@ -148,13 +148,13 @@ module.exports = class CollabyClient
       console.log f + " will not be saved!"
       return
 
+    atom.window.noUserSave = true
     buffer.save()
+    atom.window.noUserSave = false
 
   changeFileOnClient: ( data ) ->
     Helper = require "./helpers"
     f = atom.project.getPaths()[0] + data.file
-
-    console.log Helper
 
     buffer = Helper.getBufferOfFile( f )
     if !buffer
