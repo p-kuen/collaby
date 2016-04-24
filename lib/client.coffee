@@ -79,11 +79,17 @@ module.exports = class CollabyClient
     if files
       getFiles( files )
     else
+      @notification.addInfo("Syncing...")
       @socket.emit 'client:getFiles'
 
       # Handle syncing
       @socket.once 'serverFiles', (data) =>
-        getFiles( data )
+        projectCount = Object.keys( data ).length
+        if projectCount > 1
+          getFiles( data )
+        else
+          getFiles( data[ Object.keys( data )[0] ].content )
+
 
 
 
