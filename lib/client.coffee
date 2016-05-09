@@ -184,7 +184,8 @@ module.exports = class CollabyClient
 
   connect: ( ip, cb ) ->
 
-    @socket = io_cl.connect 'http://' + ip, {port: 80}
+    port = atom.config.get 'collaby.port'
+    @socket = io_cl.connect 'http://' + ip, {port: port}
 
     @socket.once 'connected', =>
       cb()

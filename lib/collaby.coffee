@@ -5,6 +5,12 @@ Helper = require "./helpers"
 
 module.exports = Collaby =
 
+  config:
+    port:
+      type: 'integer'
+      default: 80
+      minimum: 1
+
   activate: (state) ->
     # Events subscribed to in atom's system can be easily cleaned up
     # with a CompositeDisposable
@@ -38,15 +44,19 @@ module.exports = Collaby =
     CollabyServer = require "./server"
     @server = new CollabyServer()
 
-    @server.listen( 80 )
+    port = atom.config.get 'collaby.port'
+    try
+      @server.listen( port )
 
-    CollabyClient = require "./client"
-    @client = new CollabyClient( 'localhost', {serverClient: true} )
+      CollabyClient = require "./client"
+      @client = new CollabyClient( 'localhost', {serverClient: true} )
 
-    Helper.addMenuItem "Activate Tracking", "collaby:trackingOn"
-    Helper.addMenuItem "Stop Server", "collaby:stopServer"
-    Helper.removeMenuItem "Join", "collaby:join"
-    Helper.removeMenuItem "Start Server", "collaby:startServer"
+      Helper.addMenuItem "Activate Tracking", "collaby:trackingOn"
+      Helper.addMenuItem "Stop Server", "collaby:stopServer"
+      Helper.removeMenuItem "Join", "collaby:join"
+      Helper.removeMenuItem "Start Server", "collaby:startServer"
+    catch e
+      @notification.addError(e.short, {detail: e.detail});
 
   stopServer: ->
     @server.socket.close()

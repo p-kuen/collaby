@@ -30,11 +30,13 @@ module.exports = class CollabyServer
     @statusbar = statusBar
 
   listen: ( port ) ->
-    port ?= 80
-    @socket = require('socket.io').listen( port )
-    @handleEvents()
-    @notification.addInfo("Server listens on port #{port} now!")
-    return @socket
+    try
+      @socket = require('socket.io').listen( port )
+      @handleEvents()
+      @notification.addInfo("Server listens on port #{port} now!")
+      return @socket
+    catch e
+      throw {short: "Server cannot listen on port #{port}!", detail: e}
 
   getFiles: ->
     fs = require 'fs'
