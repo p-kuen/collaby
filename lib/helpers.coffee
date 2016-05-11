@@ -17,9 +17,10 @@ module.exports = Helper =
     console.log localPath
     diffFiles = []
     fs = require 'fs'
+    path = require 'path'
 
     for sName, sFile of serverFiles
-      filePath = localPath + "\\" + sName
+      filePath = localPath + path.sep + sName
       if sFile.type is "directory"
         @createFileIfNotExists( {path: filePath}, ->
           clientFiles[sName] = {name: sName, content: {}, type: "directory"}
@@ -39,7 +40,7 @@ module.exports = Helper =
 
     for cName, cFile of clientFiles
       if !(serverFiles[cName]?)
-        filePath = localPath + "\\" + cName
+        filePath = localPath + path.sep + cName
         if cFile.type is "directory"
           @deleteFolderRecursive( cFile, filePath )
         else
@@ -107,7 +108,7 @@ module.exports = Helper =
       files = fs.readdirSync curPath
       arr = {}
       for file in files
-        filePath = curPath + "\\" + file
+        filePath = curPath + path.sep + file
         stat = fs.statSync filePath
         if stat.isDirectory()
           arr[file] = {name: file, type: "directory",
