@@ -3,29 +3,29 @@
   "main": "./lib/collaby",
   "version": "1.0.0",
   "description": "A rock solid collaboration package for the atom editor",
-  "keywords": [],
-  "activationEvents": [
-    "collaby:start",
-    "collaby:join"
+  "keywords": [
+		"collaboration",
+		"pair",
+		"live"
   ],
+	"activationCommands": {
+		"atom-workspace": ["collaby:startServer","collaby:join"]
+	},
   "repository": "https://github.com/Patcher56/collaby",
   "license": "MIT",
   "engines": {
     "atom": ">=1.0.0 <2.0.0"
   },
-  "consumedServices": {
+	"consumedServices": {
     "status-bar": {
       "versions": {
-        "^1.0.0": "consumeStatusBar"
+        ">=1.0.0": "consumeStatusBar"
       }
     }
   },
   "dependencies": {
-    "atom-space-pen-views": "^2.0.0",
-    "socket.io": ">=1.4.5",
-    "socket.io-client": ">=1.4.5",
-    "emissary": ">=1.0.0",
-    "event-kit": "^2.0.0",
-    "underscore": "^1.7.0"
+    "socket.io": ">=2.0.3",
+    "socket.io-client": ">=2.0.3",
+    "event-kit": "^2.3.0"
   }
 }
