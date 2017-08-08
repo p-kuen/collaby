@@ -1,22 +1,25 @@
 {
   "name": "collaby",
   "main": "./lib/collaby",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "description": "A rock solid collaboration package for the atom editor",
   "keywords": [
-		"collaboration",
-		"pair",
-		"live"
+    "collaboration",
+    "pair",
+    "live"
   ],
-	"activationCommands": {
-		"atom-workspace": ["collaby:startServer","collaby:join"]
-	},
+  "activationCommands": {
+    "atom-workspace": [
+      "collaby:startServer",
+      "collaby:join"
+    ]
+  },
   "repository": "https://github.com/Patcher56/collaby",
   "license": "MIT",
   "engines": {
     "atom": ">=1.0.0 <2.0.0"
   },
-	"consumedServices": {
+  "consumedServices": {
     "status-bar": {
       "versions": {
         ">=1.0.0": "consumeStatusBar"
