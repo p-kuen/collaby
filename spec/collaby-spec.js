@@ -1,73 +1,75 @@
 'use babel';
 
 import Collaby from '../lib/collaby';
+import CollabyServer from '../lib/server';
+import CollabyClient from '../lib/client';
 
 // Use the command `window:run-package-specs` (cmd-alt-ctrl-p) to run specs.
 //
 // To run a specific `it` or `describe` block add an `f` to the front (e.g. `fit`
 // or `fdescribe`). Remove the `f` to unfocus the block.
 
-describe('Collaby', () => {
-  let workspaceElement, activationPromise;
+describe('Collaby Server', () => {
+
+	let workspaceElement, activationPromise;
+	let pkg;
 
   beforeEach(() => {
     workspaceElement = atom.views.getView(atom.workspace);
-    activationPromise = atom.packages.activatePackage('collaby');
+    activationPromise = atom.packages.activatePackage('collaby').then((pack) => {
+			pkg = pack.mainModule;
+		} );
   });
 
-  describe('when the collaby:toggle event is triggered', () => {
-    it('hides and shows the modal panel', () => {
-      // Before the activation event the view is not on the DOM, and no panel
-      // has been created
-      expect(workspaceElement.querySelector('.collaby')).not.toExist();
+  describe('when the collaby:startServer event is triggered', () => {
 
-      // This is an activation event, triggering it will cause the package to be
-      // activated.
-      atom.commands.dispatch(workspaceElement, 'collaby:toggle');
+		beforeEach(() => {
 
-      waitsForPromise(() => {
+			atom.commands.dispatch(workspaceElement, 'collaby:startServer');
+
+			waitsForPromise(() => {
         return activationPromise;
       });
 
-      runs(() => {
-        expect(workspaceElement.querySelector('.collaby')).toExist();
+			waitsFor(() => {
+				return pkg.client.socket.connected;
+			}, "The Value should be incremented", 1)
 
-        let collabyElement = workspaceElement.querySelector('.collaby');
-        expect(collabyElement).toExist();
+		});
 
-        let collabyPanel = atom.workspace.panelForItem(collabyElement);
-        expect(collabyPanel.isVisible()).toBe(true);
-        atom.commands.dispatch(workspaceElement, 'collaby:toggle');
-        expect(collabyPanel.isVisible()).toBe(false);
-      });
+
+    it('creates a server and serverclient', () => {
+
+			runs(() => {
+
+				expect(pkg.server).not.toBe(null);
+				expect(pkg.client).not.toBe(null);
+				expect(pkg.client.socket.connected).toBeTruthy();
+
+			});
+
+
+
     });
 
-    it('hides and shows the view', () => {
-      // This test shows you an integration test testing at the view level.
+		describe('when a client connects to the server', () => {
 
-      // Attaching the workspaceElement to the DOM is required to allow the
-      // `toBeVisible()` matchers to work. Anything testing visibility or focus
-      // requires that the workspaceElement is on the DOM. Tests that attach the
-      // workspaceElement to the DOM are generally slower than those off DOM.
-      jasmine.attachToDOM(workspaceElement);
+			it('creates a client and shows the right view', () => {
 
-      expect(workspaceElement.querySelector('.collaby')).not.toExist();
+				atom.commands.dispatch(workspaceElement, 'collaby:join');
 
-      // This is an activation event, triggering it causes the package to be
-      // activated.
-      atom.commands.dispatch(workspaceElement, 'collaby:toggle');
+	      runs(() => {
+					expect(pkg.client).not.toBe(null);
+					let ipView = workspaceElement.querySelector('.collaby.ip-view');
+					let editor = ipView.querySelector('atom-text-editor').getModel();
+					expect(ipView).toBeTruthy();
+					editor.setText("localhost");
+					atom.commands.dispatch(ipView, "core:confirm");
+	      });
+			});
 
-      waitsForPromise(() => {
-        return activationPromise;
-      });
+		});
 
-      runs(() => {
-        // Now we can test for view visibility
-        let collabyElement = workspaceElement.querySelector('.collaby');
-        expect(collabyElement).toBeVisible();
-        atom.commands.dispatch(workspaceElement, 'collaby:toggle');
-        expect(collabyElement).not.toBeVisible();
-      });
-    });
   });
+
 });
