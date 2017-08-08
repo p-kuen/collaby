@@ -1,7 +1,7 @@
 {
   "name": "collaby",
   "main": "./lib/collaby",
-  "version": "0.2.7",
+  "version": "1.0.0",
   "description": "A rock solid collaboration package for the atom editor",
   "keywords": [],
   "activationEvents": [
