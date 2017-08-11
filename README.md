@@ -1,6 +1,9 @@
 # collaby package
 
 Collaborate with this solid addon.
+It works so fast and so stable. You will love it! :)
+
+![Collaby Animation](https://raw.githubusercontent.com/Patcher56/collaby/master/anim.gif)
 
 ## How does collaby work?
 Collaby is working with socket.io and the internal atom methods.
